@@ -94,4 +94,68 @@ public class FileStorageUtil {
 
         return lineNumber;
     }
+
+    /**
+     * Метод обновляет определенную строку, меняет данные на новые.
+     * Т.е. старые нужно изначально изъять, затем изменить и измененные данные записать.
+     * @param lineNumber Номер строки, которую надо изменить
+     * @param newData Новые данные строки которые надо изменить.
+     */
+    public static void updateLineByNumber(int lineNumber, String newData) {
+        List<String> lines = new ArrayList<>();
+        File dirStorage = new File(DIR_STORAGE);
+        File archiveFile = new File(dirStorage, FILE_STORAGE);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archiveFile))) {
+            String line;
+            int currentLine = 0;
+            while ((line = reader.readLine()) != null) {
+                if (currentLine == lineNumber) { // изменяем данные в нужной строке
+                    lines.add(newData); // добавляем новые данные в список
+                } else {
+                    lines.add(line); // добавляем старые данные в список
+                }
+                currentLine++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileWriter writer = new FileWriter(archiveFile, false)) {
+
+            for (String newLine : lines) {
+                writer.write(newLine + System.lineSeparator()); // записываем измененные данные в файл
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод отдает строку по номеру.
+     * @param lineNumber Номер строки
+     * @return
+     */
+    public static String getLineByNumber(int lineNumber) {
+        File dirStorage = new File(DIR_STORAGE);
+        File archiveFile = new File(dirStorage, FILE_STORAGE);
+        String line = null; // строка, по умолчанию null (не найдено)
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archiveFile))) {
+            String currentLine;
+            int currentLineNumber = 0;
+            while ((currentLine = reader.readLine()) != null) {
+                if (currentLineNumber == lineNumber) {
+                    line = currentLine; // запоминаем нужную строку
+                    break;
+                }
+                currentLineNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return line;
+    }
 }
