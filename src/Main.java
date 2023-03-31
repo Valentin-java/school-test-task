@@ -163,14 +163,26 @@ public class Main {
         showLists();
     }
 
+    /**
+     * Сценарий обновления записи в БД
+     * @param request
+     */
     private static void updateDataTable(String request) {
 
     }
 
+    /**
+     * Сценарий удаления записи в БД
+     * @param request
+     */
     private static void deleteDataTable(String request) {
 
     }
 
+    /**
+     * Сценарий выборки определенной записи в БД
+     * @param request
+     */
     private static void selectDataTable(String request) {
 
     }
