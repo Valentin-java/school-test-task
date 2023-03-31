@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileStorageUtil {
 
@@ -29,6 +31,7 @@ public class FileStorageUtil {
         try (FileWriter writer = new FileWriter(archiveFile,true)) {
             writer.write(data + System.lineSeparator()); // запись данных в файл
         }
+        System.out.println("Запись сохранена успешно.");
     }
 
     /**
@@ -157,5 +160,31 @@ public class FileStorageUtil {
         }
 
         return line;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static List<Map<String, String>> getList() {
+        File dirStorage = new File(DIR_STORAGE);
+        File archiveFile = new File(dirStorage, FILE_STORAGE);
+        List<Map<String, String>> data = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archiveFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                Map<String, String> row = new HashMap<>();
+                for (String part : parts) {
+                    String[] keyValue = part.split(":");
+                    row.put(keyValue[0], keyValue[1]);
+                }
+                data.add(row);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }
