@@ -187,4 +187,28 @@ public class FileStorageUtil {
         }
         return data;
     }
+
+    /**
+     * Преобразовать запись из нашей БД в мапу
+     * @param row
+     * @return
+     */
+    public static Map<String, String> createMapFromString(String row) {
+
+        // Удаляем точку с запятой в конце строки
+        row = row.replaceAll(";", "");
+
+        // Создаем новую мапу
+        Map<String, String> map = new HashMap<>();
+
+        // Разбиваем строку на отдельные пары ключ-значение
+        String[] parts = row.split(",");
+        for (String part : parts) {
+            // Разбиваем каждую пару ключ-значение на отдельные элементы
+            String[] keyValue = part.split(":");
+            // Добавляем пару ключ-значение в мапу
+            map.put(keyValue[0], keyValue[1]);
+        }
+        return map;
+    }
 }
